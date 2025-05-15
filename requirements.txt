@@ -1,0 +1,1 @@
+Pyrogram==2.0.106 aiohttp==3.9.5 python-dotenv==1.0.1 Flask==3.0.3
