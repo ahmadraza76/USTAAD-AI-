@@ -9,7 +9,6 @@ from ui import register_callback_handlers
 from moderation import register_moderation_handlers
 from polls import register_poll_handlers
 
-# Configure logging
 logging.basicConfig(
     filename='bot.log',
     level=logging.INFO,
@@ -17,10 +16,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize database
 db = Database('group_manager.db')
 
-# Initialize bot
 bot_client = Client(
     name="ustaad_ai_group_manager",
     api_id=API_ID,
@@ -29,21 +26,16 @@ bot_client = Client(
     in_memory=False
 )
 
-# Bot lifecycle
 async def init_bot():
-    bot_client.session = aiohttp.ClientSession()
     logger.info("Bot initialized")
 
 async def shutdown_bot():
-    if hasattr(bot_client, 'session'):
-        await bot_client.session.close()
     db.close()
     logger.info("Bot shut down")
 
 bot_client.on_startup(init_bot)
 bot_client.on_shutdown(shutdown_bot)
 
-# Register handlers
 register_command_handlers(bot_client)
 register_callback_handlers(bot_client)
 register_moderation_handlers(bot_client)
